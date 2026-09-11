@@ -47,3 +47,6 @@ Thumbs.db
 
 # Local inspection / temporary work
 /tmp/
+
+# Ansible Runner generated artifacts
+ansible/runner-test/artifacts/

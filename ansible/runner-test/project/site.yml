@@ -1,0 +1,6 @@
+- name: B9 Ansible Runner Local Test
+  hosts: local
+  gather_facts: false
+  tasks:
+    - name: Verify Ansible execution through Runner
+      ansible.builtin.ping:
