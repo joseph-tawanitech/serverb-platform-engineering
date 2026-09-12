@@ -1,0 +1,12 @@
+[Unit]
+Description=Server B Rootless Podman Test
+
+[Container]
+Image=docker.io/library/alpine:latest
+Exec=sh -c "echo Server B container lifecycle test successful; sleep 3600"
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
