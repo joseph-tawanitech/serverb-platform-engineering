@@ -1,0 +1,17 @@
+- name: B11 Terraform to Ansible Integration Test
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Verify Terraform value was received
+      ansible.builtin.assert:
+        that:
+          - terraform_environment is defined
+          - terraform_environment == "server-b"
+        success_msg: "Terraform → Ansible handoff successful: {{ terraform_environment }}"
+        fail_msg: "Terraform → Ansible handoff failed"
+
+    - name: Report Terraform value
+      ansible.builtin.debug:
+        msg: "Ansible received Terraform environment: {{ terraform_environment }}"
