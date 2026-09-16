@@ -50,3 +50,8 @@ Thumbs.db
 
 # Ansible Runner generated artifacts
 ansible/runner-test/artifacts/
+
+# B14 Python environment and cache
+modules/B14/.venv/
+modules/B14/src/__pycache__/
+*.pyc
