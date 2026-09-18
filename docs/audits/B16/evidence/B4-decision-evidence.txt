@@ -1,0 +1,54 @@
+===== B16 B4 — PRE-REMEDIATION DECISION EVIDENCE =====
+
+Timestamp:
+Fri Sep 18 11:05:13 PM UTC 2026
+
+=== SYSTEM STATE ===
+               Local time: Fri 2026-09-18 23:05:15 UTC
+           Universal time: Fri 2026-09-18 23:05:15 UTC
+                 RTC time: Fri 2026-09-18 23:05:14
+                Time zone: Etc/UTC (UTC, +0000)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+
+=== CHRONY TRACKING ===
+Reference ID    : B97DBE7B (ntp-nts-3.ps5.canonical.com)
+Stratum         : 3
+Ref time (UTC)  : Fri Sep 18 22:53:35 2026
+System time     : 0.002606122 seconds slow of NTP time
+Last offset     : +0.000523026 seconds
+RMS offset      : 54.329021454 seconds
+Frequency       : 4.866 ppm fast
+Residual freq   : -0.018 ppm
+Skew            : 0.311 ppm
+Root delay      : 0.178250790 seconds
+Root dispersion : 0.009717407 seconds
+Update interval : 1035.7 seconds
+Leap status     : Normal
+
+=== CHRONY SOURCES ===
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current best, '+' = combined, '-' = not combined,
+| /             'x' = may be in error, '~' = too variable, '?' = unusable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^+ ntp-nts-2.ps5.canonical.>     2  10   367   108    +14ms[  +14ms] +/-  134ms
+^* ntp-nts-3.ps5.canonical.>     2  10   377   699  +1275us[+1798us] +/-  103ms
+^+ ntp-nts-2.ps6.canonical.>     2  10   377   961    -16ms[  -15ms] +/-  158ms
+^+ ntp-nts-3.ps6.canonical.>     2  10   377   924    -11ms[  -11ms] +/-  164ms
+^- ntp-nts-1.ps6.canonical.>     2  10   377   501  -3904us[-3904us] +/-  149ms
+
+=== CHRONY ACTIVITY ===
+200 OK
+5 sources online
+0 sources offline
+0 sources doing burst (return to online)
+0 sources doing burst (return to offline)
+0 sources with unknown address

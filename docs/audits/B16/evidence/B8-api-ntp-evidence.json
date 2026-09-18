@@ -1,0 +1,32 @@
+{
+    "timedatectl": {
+        "command": "timedatectl status",
+        "return_code": 0,
+        "stdout": "Local time: Fri 2026-09-18 23:28:01 UTC\n           Universal time: Fri 2026-09-18 23:28:01 UTC\n                 RTC time: Fri 2026-09-18 23:28:00\n                Time zone: Etc/UTC (UTC, +0000)\nSystem clock synchronized: yes\n              NTP service: active\n          RTC in local TZ: no",
+        "stderr": ""
+    },
+    "chrony_tracking": {
+        "command": "chronyc tracking",
+        "return_code": 0,
+        "stdout": "Reference ID    : B97DBE7B (ntp-nts-3.ps5.canonical.com)\nStratum         : 3\nRef time (UTC)  : Fri Sep 18 23:10:45 2026\nSystem time     : 0.001684746 seconds slow of NTP time\nLast offset     : -0.006034041 seconds\nRMS offset      : 51.541034698 seconds\nFrequency       : 4.641 ppm fast\nResidual freq   : -0.078 ppm\nSkew            : 0.448 ppm\nRoot delay      : 0.178250790 seconds\nRoot dispersion : 0.014684571 seconds\nUpdate interval : 1030.2 seconds\nLeap status     : Normal",
+        "stderr": ""
+    },
+    "chrony_sources": {
+        "command": "chronyc sources -v",
+        "return_code": 0,
+        "stdout": ".-- Source mode  '^' = server, '=' = peer, '#' = local clock.\n / .- Source state '*' = current best, '+' = combined, '-' = not combined,\n| /             'x' = may be in error, '~' = too variable, '?' = unusable.\n||                                                 .- xxxx [ yyyy ] +/- zzzz\n||      Reachability register (octal) -.           |  xxxx = adjusted offset,\n||      Log2(Polling interval) --.      |          |  yyyy = measured offset,\n||                                \\     |          |  zzzz = estimated error.\n||                                 |    |           \\\nMS Name/IP address         Stratum Poll Reach LastRx Last sample               \n===============================================================================\n^+ ntp-nts-2.ps5.canonical.>     2  10   357   441  +7944us[+7944us] +/-   86ms\n^* ntp-nts-3.ps5.canonical.>     2  10   377  1035    -33ms[  -39ms] +/-  128ms\n^+ ntp-nts-2.ps6.canonical.>     2  10   377   254  -3971us[-3971us] +/-  150ms\n^+ ntp-nts-3.ps6.canonical.>     2  10   377   216  +5999us[+5999us] +/-  154ms\n^- ntp-nts-1.ps6.canonical.>     2  10   377   836    -17ms[  -17ms] +/-  166ms",
+        "stderr": ""
+    },
+    "chrony_sourcestats": {
+        "command": "chronyc sourcestats -v",
+        "return_code": 0,
+        "stdout": ".- Number of sample points in measurement set.\n                            /    .- Number of residual runs with same sign.\n                           |    /    .- Length of measurement set (time).\n                           |   |    /      .- Est. clock freq error (ppm).\n                           |   |   |      /           .- Est. error in freq.\n                           |   |   |     |           /         .- Est. offset.\n                           |   |   |     |          |          |   On the -.\n                           |   |   |     |          |          |   samples. \\\n                           |   |   |     |          |          |             |\nName/IP Address            NP  NR  Span  Frequency  Freq Skew  Offset  Std Dev\n==============================================================================\nntp-nts-2.ps5.canonical.>  33  21  554m     -0.031      0.822  +3532us    13ms\nntp-nts-3.ps5.canonical.>  24  11  411m     -0.275      1.611  -3728us    16ms\nntp-nts-2.ps6.canonical.>  34  21  570m     +0.036      0.519  +4953us  8092us\nntp-nts-3.ps6.canonical.>  35  20   10h     -0.160      0.412  -2398us  7293us\nntp-nts-1.ps6.canonical.>  14  11  235m     -2.577      3.869  -8532us    13ms",
+        "stderr": ""
+    },
+    "chrony_service": {
+        "command": "systemctl show chrony --property=ActiveState,SubState,NRestarts",
+        "return_code": 0,
+        "stdout": "ActiveState=active\nSubState=running\nNRestarts=0",
+        "stderr": ""
+    }
+}

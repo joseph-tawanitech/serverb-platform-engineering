@@ -1,0 +1,66 @@
+===== B16 B9 — INCIDENT EXECUTION RECORD =====
+
+Incident:
+Server B NTP / System Clock Synchronization Incident
+
+Host:
+server-b-tap
+
+Detection:
+System clock synchronization was not established.
+
+Investigation:
+Chrony tracking, NTP sources, source activity and Chrony journal
+evidence were correlated.
+
+Root Cause:
+Chrony encountered unreliable NTP source conditions, including
+excessive jitter, excessive root distance and falseticker detection.
+This resulted in a period where no reliable source majority was
+available and Chrony reported a large system-clock error.
+
+Decision:
+Apply controlled Chrony clock correction using the supported
+makestep operation.
+
+Authorization Control:
+Remediation was performed within the controlled infrastructure
+operations context. A separate approval workflow for this specific
+command was not independently demonstrated in this incident.
+
+Execution:
+sudo chronyc makestep
+
+Execution Result:
+200 OK
+
+Execution Status:
+SUCCESS
+
+Verification:
+System clock synchronized: yes
+NTP=yes
+NTPSynchronized=yes
+System time offset: approximately 0.0037 seconds slow of NTP time
+Chrony service: active
+5 NTP sources online
+0 NTP sources offline
+Leap status: Normal
+
+Evidence Delivery:
+B16 FastAPI NTP evidence endpoint
+/api/evidence/ntp
+
+Final Result:
+PASS
+
+Audit Evidence:
+B1 — Observability
+B2 — Investigation
+B3 — Root Cause Analysis
+B4 — Decision Evidence
+B5 — Authorization Control Boundary
+B6 — Remediation Execution
+B7 — Post-Remediation Verification
+B8 — API Evidence Delivery
+B9 — Incident Execution Record

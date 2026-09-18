@@ -1,0 +1,158 @@
+===== B16 B3 — ROOT CAUSE ANALYSIS =====
+
+Timestamp:
+Fri Sep 18 11:02:02 PM UTC 2026
+
+=== CHRONY JOURNAL — INCIDENT EVIDENCE ===
+Sep 09 19:22:57 server-b-tap chronyd[1152]: Selected source 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 09 19:22:58 server-b-tap chronyd[1152]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 10 05:21:58 server-b-tap chronyd[1104]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 10 05:23:04 server-b-tap chronyd[1104]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 10 06:56:56 server-b-tap chronyd[1104]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 10 20:50:10 server-b-tap chronyd[1104]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 10 20:51:04 server-b-tap chronyd[1104]: Jitter of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 10 20:51:15 server-b-tap chronyd[1104]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 10 20:51:15 server-b-tap chronyd[1104]: Jitter of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 10 20:52:20 server-b-tap chronyd[1104]: Detected falseticker 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 10 20:53:13 server-b-tap chronyd[1104]: Detected falseticker 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 10 20:53:46 server-b-tap chronyd[1104]: Can't synchronise: no majority (only 2 of 4 sources agree)
+Sep 10 20:56:59 server-b-tap chronyd[1104]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 10 20:57:10 server-b-tap chronyd[1104]: Detected falseticker 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 10 20:57:10 server-b-tap chronyd[1104]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 10 20:57:10 server-b-tap chronyd[1104]: System clock wrong by 28109.294479 seconds
+Sep 10 20:57:31 server-b-tap chronyd[1104]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 10 20:57:31 server-b-tap chronyd[1104]: Detected falseticker 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 10 21:00:25 server-b-tap chronyd[1104]: Root distance of 185.125.190.121 (ntp-bootstrap.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 10 21:01:30 server-b-tap chronyd[1104]: Jitter of 185.125.190.121 (ntp-bootstrap.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 10 21:02:07 server-b-tap chronyd[1104]: Jitter of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 10 21:02:23 server-b-tap chronyd[1104]: Root distance of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 11 03:17:53 server-b-tap chronyd[1104]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 11 03:21:06 server-b-tap chronyd[1104]: Jitter of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 11 03:22:09 server-b-tap chronyd[1104]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 11 03:23:15 server-b-tap chronyd[1104]: Detected falseticker 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 11 03:24:19 server-b-tap chronyd[1104]: Jitter of 185.125.190.121 (ntp-bootstrap.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 11 03:24:20 server-b-tap chronyd[1104]: Root distance of 185.125.190.121 (ntp-bootstrap.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 11 03:26:29 server-b-tap chronyd[1104]: Can't synchronise: no majority (only 2 of 4 sources agree)
+Sep 11 03:27:57 server-b-tap chronyd[1104]: Detected falseticker 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 11 03:27:57 server-b-tap chronyd[1104]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 11 03:27:57 server-b-tap chronyd[1104]: System clock wrong by 3592.101121 seconds
+Sep 11 03:28:08 server-b-tap chronyd[1104]: Detected falseticker 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 11 03:29:12 server-b-tap chronyd[1104]: Jitter of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 11 03:29:42 server-b-tap chronyd[1104]: Root distance of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 11 03:31:11 server-b-tap chronyd[1104]: Jitter of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 11 03:31:22 server-b-tap chronyd[1104]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 11 03:34:45 server-b-tap chronyd[1104]: Jitter of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 11 03:35:05 server-b-tap chronyd[1104]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 11 18:00:10 server-b-tap chronyd[1176]: Selected source 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 11 18:00:11 server-b-tap chronyd[1176]: Selected source 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 11 18:00:39 server-b-tap chronyd[1176]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 11 18:01:16 server-b-tap chronyd[1176]: Selected source 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 11 18:10:22 server-b-tap chronyd[1176]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 11 19:54:44 server-b-tap chronyd[1176]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 12 03:14:32 server-b-tap chronyd[1204]: Selected source 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 12 03:14:32 server-b-tap chronyd[1204]: System clock wrong by 1.011950 seconds
+Sep 12 03:14:35 server-b-tap chronyd[1204]: Selected source 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 12 03:16:44 server-b-tap chronyd[1204]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 12 03:28:37 server-b-tap chronyd[1204]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 12 06:08:29 server-b-tap chronyd[1182]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 12 06:08:30 server-b-tap chronyd[1182]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 12 06:25:44 server-b-tap chronyd[1182]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 12 20:17:19 server-b-tap chronyd[1184]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 12 20:17:20 server-b-tap chronyd[1184]: Selected source 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 12 20:27:00 server-b-tap chronyd[1184]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 12 21:12:17 server-b-tap chronyd[1184]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 12 21:15:31 server-b-tap chronyd[1184]: Root distance of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 12 21:16:36 server-b-tap chronyd[1184]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 12 21:17:41 server-b-tap chronyd[1184]: Detected falseticker 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 12 21:18:46 server-b-tap chronyd[1184]: Can't synchronise: no majority (only 2 of 4 sources agree)
+Sep 12 21:18:50 server-b-tap chronyd[1184]: Detected falseticker 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 12 21:18:50 server-b-tap chronyd[1184]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 12 21:18:50 server-b-tap chronyd[1184]: System clock wrong by 25285.149717 seconds
+Sep 12 21:22:00 server-b-tap chronyd[1184]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 12 21:22:04 server-b-tap chronyd[1184]: Root distance of 185.125.190.121 (ntp-bootstrap.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 12 21:22:07 server-b-tap chronyd[1184]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 12 21:32:46 server-b-tap chronyd[1184]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 12 22:07:17 server-b-tap chronyd[1184]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 13 01:33:40 server-b-tap chronyd[1184]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 13 03:00:05 server-b-tap chronyd[1184]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 13 10:45:36 server-b-tap chronyd[1184]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 14 05:43:03 server-b-tap chronyd[1184]: Jitter of 185.125.190.121 (ntp-bootstrap.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 05:47:23 server-b-tap chronyd[1184]: Detected falseticker 91.189.91.111 (ntp-bootstrap.ubuntu.com)
+Sep 14 05:47:53 server-b-tap chronyd[1184]: Jitter of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 05:48:27 server-b-tap chronyd[1184]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 05:50:03 server-b-tap chronyd[1184]: Detected falseticker 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 14 05:51:39 server-b-tap chronyd[1184]: Can't synchronise: no majority (only 2 of 4 sources agree)
+Sep 14 05:52:52 server-b-tap chronyd[1184]: Detected falseticker 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 14 05:52:52 server-b-tap chronyd[1184]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 14 05:52:52 server-b-tap chronyd[1184]: System clock wrong by 5981.473224 seconds
+Sep 14 05:53:16 server-b-tap chronyd[1184]: Detected falseticker 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 14 05:54:53 server-b-tap chronyd[1184]: Jitter of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 05:54:55 server-b-tap chronyd[1184]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 05:56:06 server-b-tap chronyd[1184]: Jitter of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 05:56:31 server-b-tap chronyd[1184]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 06:07:48 server-b-tap chronyd[1184]: Jitter of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 06:07:52 server-b-tap chronyd[1184]: Root distance of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 06:52:40 server-b-tap chronyd[1184]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 14 18:21:36 server-b-tap chronyd[1184]: Jitter of 91.189.91.111 (ntp-bootstrap.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 18:22:09 server-b-tap chronyd[1184]: Jitter of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 18:22:13 server-b-tap chronyd[1184]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 18:22:33 server-b-tap chronyd[1184]: Can't synchronise: no selectable sources (1 unreachable sources)
+Sep 14 18:24:08 server-b-tap chronyd[1184]: Jitter of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 18:24:18 server-b-tap chronyd[1184]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 18:24:18 server-b-tap chronyd[1184]: Selected source 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 14 18:24:18 server-b-tap chronyd[1184]: System clock wrong by 15684.964427 seconds
+Sep 14 18:24:42 server-b-tap chronyd[1184]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 18:25:13 server-b-tap chronyd[1184]: Jitter of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 18:25:47 server-b-tap chronyd[1184]: Jitter of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 18:25:54 server-b-tap chronyd[1184]: Root distance of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 18:26:30 server-b-tap chronyd[1184]: Jitter of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 14 18:26:52 server-b-tap chronyd[1184]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 14 18:29:31 server-b-tap chronyd[1184]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 15 05:56:50 server-b-tap chronyd[1191]: Selected source 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 15 05:56:50 server-b-tap chronyd[1191]: System clock wrong by 1.183821 seconds
+Sep 15 05:57:57 server-b-tap chronyd[1191]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 16 03:59:21 server-b-tap chronyd[1202]: Selected source 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 16 03:59:21 server-b-tap chronyd[1202]: System clock wrong by 1.601982 seconds
+Sep 16 04:00:28 server-b-tap chronyd[1202]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 16 04:14:28 server-b-tap chronyd[1202]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 16 09:28:26 server-b-tap chronyd[1202]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 16 22:58:04 server-b-tap chronyd[1202]: Selected source 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 16 23:00:49 server-b-tap chronyd[1202]: Jitter of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 16 23:01:20 server-b-tap chronyd[1202]: Root distance of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 16 23:01:20 server-b-tap chronyd[1202]: Jitter of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 16 23:01:46 server-b-tap chronyd[1202]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 16 23:01:46 server-b-tap chronyd[1202]: Jitter of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 16 23:01:52 server-b-tap chronyd[1202]: Jitter of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 16 23:01:52 server-b-tap chronyd[1202]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 16 23:01:54 server-b-tap chronyd[1202]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 16 23:02:58 server-b-tap chronyd[1202]: Can't synchronise: no majority (no agreement among 2 sources)
+Sep 16 23:03:28 server-b-tap chronyd[1202]: Detected falseticker 91.189.91.111 (ntp-bootstrap.ubuntu.com)
+Sep 16 23:03:28 server-b-tap chronyd[1202]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 16 23:03:28 server-b-tap chronyd[1202]: System clock wrong by 22767.627425 seconds
+Sep 16 23:03:56 server-b-tap chronyd[1202]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 16 23:03:56 server-b-tap chronyd[1202]: Detected falseticker 91.189.91.111 (ntp-bootstrap.ubuntu.com)
+Sep 16 23:10:46 server-b-tap chronyd[1202]: Root distance of 91.189.91.111 (ntp-bootstrap.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 16 23:11:51 server-b-tap chronyd[1202]: Jitter of 91.189.91.111 (ntp-bootstrap.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 17 14:17:32 server-b-tap chronyd[1182]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 17 14:17:32 server-b-tap chronyd[1182]: System clock wrong by 2.472179 seconds
+Sep 17 14:18:39 server-b-tap chronyd[1182]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 18 00:50:45 server-b-tap chronyd[1182]: Jitter of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 18 00:51:34 server-b-tap chronyd[1182]: Root distance of 91.189.91.112 (3.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 18 00:51:34 server-b-tap chronyd[1182]: Jitter of 91.189.91.111 (ntp-bootstrap.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 18 00:51:50 server-b-tap chronyd[1182]: Root distance of 91.189.91.111 (ntp-bootstrap.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 18 00:52:54 server-b-tap chronyd[1182]: Detected falseticker 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 18 00:53:42 server-b-tap chronyd[1182]: Detected falseticker 91.189.91.111 (ntp-bootstrap.ubuntu.com)
+Sep 18 00:56:23 server-b-tap chronyd[1182]: Can't synchronise: no majority (only 2 of 4 sources agree)
+Sep 18 00:56:35 server-b-tap chronyd[1182]: Detected falseticker 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 18 00:56:35 server-b-tap chronyd[1182]: Selected source 91.189.91.112 (3.ntp.ubuntu.com)
+Sep 18 00:56:35 server-b-tap chronyd[1182]: System clock wrong by 17715.828694 seconds
+Sep 18 00:56:57 server-b-tap chronyd[1182]: Detected falseticker 91.189.91.113 (4.ntp.ubuntu.com)
+Sep 18 00:59:38 server-b-tap chronyd[1182]: Jitter of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 18 00:59:43 server-b-tap chronyd[1182]: Root distance of 185.125.190.122 (1.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 18 00:59:50 server-b-tap chronyd[1182]: Jitter of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 18 01:00:11 server-b-tap chronyd[1182]: Root distance of 185.125.190.123 (2.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 18 01:00:48 server-b-tap chronyd[1182]: Jitter of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxjitter of 1.000 seconds
+Sep 18 01:00:54 server-b-tap chronyd[1182]: Root distance of 91.189.91.113 (4.ntp.ubuntu.com) exceeds maxdistance of 3.000 seconds
+Sep 18 01:07:24 server-b-tap chronyd[1182]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+Sep 18 04:31:02 server-b-tap chronyd[1182]: Selected source 185.125.190.122 (1.ntp.ubuntu.com)
+Sep 18 16:28:23 server-b-tap chronyd[1182]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)

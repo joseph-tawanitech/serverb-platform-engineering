@@ -55,3 +55,6 @@ ansible/runner-test/artifacts/
 modules/B14/.venv/
 modules/B14/src/__pycache__/
 *.pyc
+
+# Pytest cache
+.pytest_cache/

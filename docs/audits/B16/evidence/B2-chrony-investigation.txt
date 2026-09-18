@@ -1,0 +1,45 @@
+===== B16 B2 — INVESTIGATION OF EVIDENCE =====
+
+Timestamp:
+Fri Sep 18 10:58:47 PM UTC 2026
+
+=== CHRONY TRACKING ===
+Reference ID    : B97DBE7B (ntp-nts-3.ps5.canonical.com)
+Stratum         : 3
+Ref time (UTC)  : Fri Sep 18 22:53:35 2026
+System time     : 0.002920627 seconds slow of NTP time
+Last offset     : +0.000523026 seconds
+RMS offset      : 54.329021454 seconds
+Frequency       : 4.866 ppm fast
+Residual freq   : -0.018 ppm
+Skew            : 0.311 ppm
+Root delay      : 0.178250790 seconds
+Root dispersion : 0.009202028 seconds
+Update interval : 1035.7 seconds
+Leap status     : Normal
+
+=== CHRONY SOURCES ===
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current best, '+' = combined, '-' = not combined,
+| /             'x' = may be in error, '~' = too variable, '?' = unusable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^+ ntp-nts-2.ps5.canonical.>     2  10   373   761    +22ms[  +23ms] +/-  127ms
+^* ntp-nts-3.ps5.canonical.>     2  10   377   313  +1275us[+1798us] +/-  103ms
+^+ ntp-nts-2.ps6.canonical.>     2  10   377   575    -16ms[  -15ms] +/-  158ms
+^+ ntp-nts-3.ps6.canonical.>     2  10   377   539    -11ms[  -11ms] +/-  164ms
+^- ntp-nts-1.ps6.canonical.>     2  10   377   116  -3904us[-3904us] +/-  149ms
+
+=== CHRONY ACTIVITY ===
+200 OK
+5 sources online
+0 sources offline
+0 sources doing burst (return to online)
+0 sources doing burst (return to offline)
+0 sources with unknown address

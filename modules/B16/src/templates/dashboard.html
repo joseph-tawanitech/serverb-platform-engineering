@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tawanitech SRE Remediation & Self-Healing Console</title>
+    <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div>
+            <div class="eyebrow">TAWANITECH AUTOMATION PLATFORM</div>
+            <h1>Server B AI-SRE Operations</h1>
+            <p class="subtitle">
+                Evidence-driven infrastructure investigation and governed remediation.
+            </p>
+        </div>
+
+        <div class="authority">
+            <span class="authority-label">EXECUTION AUTHORITY</span>
+            <span class="status-pill controlled">CONTROLLED</span>
+        </div>
+    </header>
+
+    <nav class="mode-bar">
+        <button class="mode-button active">SRE AI</button>
+        <button class="mode-button">Infrastructure</button>
+        <button class="mode-button">Business</button>
+    </nav>
+
+    <main class="container">
+
+        <section class="overview-grid">
+            <article class="card">
+                <div class="card-label">AI GATEWAY</div>
+                <div id="gateway-status" class="metric-value">Checking...</div>
+                <div id="gateway-detail" class="muted">B15 Gateway</div>
+            </article>
+
+            <article class="card">
+                <div class="card-label">HOST</div>
+                <div id="host-name" class="metric-value">Checking...</div>
+                <div id="host-detail" class="muted">Server health</div>
+            </article>
+
+            <article class="card">
+                <div class="card-label">MEMORY</div>
+                <div id="memory-value" class="metric-value">Checking...</div>
+                <div id="memory-detail" class="muted">Available memory</div>
+            </article>
+
+            <article class="card">
+                <div class="card-label">ROOT FILESYSTEM</div>
+                <div id="disk-value" class="metric-value">Checking...</div>
+                <div id="disk-detail" class="muted">Disk utilization</div>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <div>
+                    <div class="eyebrow">AI-SRE</div>
+                    <h2>Investigation</h2>
+                </div>
+                <span class="status-pill observe">OBSERVE</span>
+            </div>
+
+            <p class="panel-description">
+                Submit an investigation request through the governed B15 AI Gateway.
+                B16 does not directly execute infrastructure changes.
+            </p>
+
+            <form id="chat-form">
+                <label for="model">Model</label>
+                <select id="model">
+                    <option value="qwen3:4b">qwen3:4b</option>
+                </select>
+
+                <label for="prompt">Investigation request</label>
+                <textarea
+                    id="prompt"
+                    rows="6"
+                    placeholder="Example: Investigate the current Server B system health and identify anything that may require attention."
+                    required
+                ></textarea>
+
+                <div class="form-actions">
+                    <button id="chat-button" type="submit" class="primary-button">
+                        Send to AI
+                    </button>
+                    <span id="chat-status" class="muted"></span>
+                </div>
+            </form>
+
+            <div id="chat-response" class="response-box hidden">
+                <div class="response-meta">
+                    <span id="response-provider"></span>
+                    <span id="response-model"></span>
+                    <span id="response-state"></span>
+                </div>
+                <pre id="response-text"></pre>
+            </div>
+        </section>
+
+        <section class="two-column">
+
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="eyebrow">SERVER</div>
+                        <h2>System Health</h2>
+                    </div>
+                </div>
+
+                <div class="detail-grid">
+                    <div>
+                        <span class="detail-label">Hostname</span>
+                        <span id="system-hostname">—</span>
+                    </div>
+
+                    <div>
+                        <span class="detail-label">Uptime</span>
+                        <span id="system-uptime">—</span>
+                    </div>
+
+                    <div>
+                        <span class="detail-label">Load 1m</span>
+                        <span id="system-load">—</span>
+                    </div>
+
+                    <div>
+                        <span class="detail-label">NTP</span>
+                        <span id="system-ntp">—</span>
+                    </div>
+
+                    <div>
+                        <span class="detail-label">Kernel</span>
+                        <span id="system-kernel">—</span>
+                    </div>
+
+                    <div>
+                        <span class="detail-label">Local Time</span>
+                        <span id="system-time">—</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="eyebrow">SYSTEMD</div>
+                        <h2>Managed Services</h2>
+                    </div>
+                </div>
+
+                <div id="services-list" class="services-list">
+                    <div class="muted">Loading...</div>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <div>
+                    <div class="eyebrow">OPERATIONS</div>
+                    <h2>Console Status</h2>
+                </div>
+
+                <button id="refresh-button" class="secondary-button">
+                    Refresh
+                </button>
+            </div>
+
+            <div class="console-footer">
+                <span id="last-refresh">Not refreshed yet</span>
+                <span id="global-status" class="muted"></span>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="/static/dashboard.js"></script>
+</body>
+</html>
