@@ -42,11 +42,15 @@ class ChatMessage(BaseModel):
     content: str = Field(min_length=1, max_length=12000)
 
 
+ResponseProfile = Literal["default", "investigation_json"]
+
+
 class ChatRequest(BaseModel):
     """Controlled client request to the AI Gateway."""
 
     model: str = Field(default="qwen3:4b", min_length=1, max_length=200)
     messages: list[ChatMessage] = Field(min_length=1, max_length=50)
+    profile: ResponseProfile = "default"
 
 
 class ChatResponse(BaseModel):
@@ -94,6 +98,7 @@ def chat(request: ChatRequest) -> ChatResponse:
             }
             for message in request.messages
         ],
+        profile=request.profile,
     )
 
     return ChatResponse(

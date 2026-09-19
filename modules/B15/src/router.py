@@ -7,7 +7,7 @@ Clients do not communicate directly with providers.
 
 from fastapi import HTTPException
 
-from .providers.ollama import OllamaProvider
+from .providers.ollama import OllamaProvider, ResponseProfile
 
 
 class ModelRouter:
@@ -18,7 +18,12 @@ class ModelRouter:
             "ollama": OllamaProvider(),
         }
 
-    def route(self, model: str, messages: list[dict]) -> dict:
+    def route(
+        self,
+        model: str,
+        messages: list[dict],
+        profile: ResponseProfile = "default",
+    ) -> dict:
         """
         Route a model request to the appropriate provider.
 
@@ -33,6 +38,7 @@ class ModelRouter:
                 response = provider.chat(
                     model=model,
                     messages=messages,
+                    profile=profile,
                 )
 
             except Exception as exc:

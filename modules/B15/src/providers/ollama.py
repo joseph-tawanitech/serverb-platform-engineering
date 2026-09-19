@@ -6,6 +6,7 @@ The Model Router decides when this provider is used.
 """
 
 import os
+from typing import Literal
 
 import httpx
 
@@ -16,13 +17,30 @@ OLLAMA_URL = os.getenv(
 )
 
 
+ResponseProfile = Literal["default", "investigation_json"]
+
+
 class OllamaProvider:
     """Controlled provider interface for Ollama."""
 
     name = "ollama"
 
-    def chat(self, model: str, messages: list[dict]) -> str:
+    def chat(
+        self,
+        model: str,
+        messages: list[dict],
+        profile: ResponseProfile = "default",
+    ) -> str:
         """Send a chat request to Ollama and return the model response."""
+
+        if profile == "default":
+            num_predict = 80
+            output_format = None
+        elif profile == "investigation_json":
+            num_predict = 512
+            output_format = "json"
+        else:
+            raise ValueError(f"Unsupported Ollama response profile: {profile}")
 
         payload = {
             "model": model,
@@ -30,14 +48,17 @@ class OllamaProvider:
             "stream": False,
             "think": False,
             "options": {
-                "num_predict": 80,
+                "num_predict": num_predict,
             },
         }
+
+        if output_format is not None:
+            payload["format"] = output_format
 
         response = httpx.post(
             f"{OLLAMA_URL}/api/chat",
             json=payload,
-            timeout=120.0,
+            timeout=150.0,
         )
         response.raise_for_status()
 

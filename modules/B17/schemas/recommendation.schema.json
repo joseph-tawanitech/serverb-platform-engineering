@@ -1,0 +1,461 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tawanitech.local/tap/b17/recommendation.schema.json",
+  "title": "TAP B17 Investigation Recommendation",
+  "description": "Structured AI investigation and recommendation contract for TAP B17.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident",
+    "asset",
+    "observed_state",
+    "evidence",
+    "timeline",
+    "dependencies",
+    "findings",
+    "hypotheses",
+    "confidence",
+    "impact",
+    "risk",
+    "recommendation",
+    "backup_requirement",
+    "authorization_requirement",
+    "missing_evidence",
+    "verification_plan"
+  ],
+  "properties": {
+    "incident": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "summary",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "observed",
+            "investigating",
+            "identified",
+            "resolved",
+            "unknown"
+          ]
+        }
+      }
+    },
+
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "environment"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ip": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+
+    "observed_state": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source",
+          "observation"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "observation": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reliability": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event",
+          "timestamp"
+        ],
+        "properties": {
+          "timestamp": {
+            "type": "string"
+          },
+          "event": {
+            "type": "string"
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "component",
+          "relationship"
+        ],
+        "properties": {
+          "component": {
+            "type": "string"
+          },
+          "relationship": {
+            "type": "string"
+          },
+          "status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "finding",
+          "basis"
+        ],
+        "properties": {
+          "finding": {
+            "type": "string"
+          },
+          "basis": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "hypothesis",
+          "supporting_evidence",
+          "contradicting_evidence",
+          "missing_evidence",
+          "confidence"
+        ],
+        "properties": {
+          "hypothesis": {
+            "type": "string"
+          },
+          "supporting_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contradicting_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "missing_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+
+    "impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "availability",
+        "performance",
+        "data",
+        "security",
+        "customer",
+        "dependencies"
+      ],
+      "properties": {
+        "availability": {
+          "type": "string"
+        },
+        "performance": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        },
+        "security": {
+          "type": "string"
+        },
+        "customer": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "string"
+        }
+      }
+    },
+
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "basis",
+        "reversibility",
+        "blast_radius"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ]
+        },
+        "basis": {
+          "type": "string"
+        },
+        "reversibility": {
+          "type": "string"
+        },
+        "blast_radius": {
+          "type": "string"
+        }
+      }
+    },
+
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "actions",
+        "rationale"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rationale": {
+          "type": "string"
+        }
+      }
+    },
+
+    "backup_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "status",
+        "reason"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "available",
+            "unverified",
+            "missing",
+            "not_required",
+            "unknown"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+
+    "authorization_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "level",
+        "reason"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "POLICY",
+            "HUMAN",
+            "MANDATORY_HUMAN"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "verification_plan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "criterion",
+          "method"
+        ],
+        "properties": {
+          "criterion": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "expected_result": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
