@@ -1,0 +1,104 @@
+===== B16 B11 — CURRENT NTP INCIDENT EXECUTION RECORD =====
+
+Incident:
+Server B system clock lost NTP synchronization and remained
+approximately 12,187 seconds behind the current NTP reference.
+
+===== DETECTION =====
+
+Detection:
+B16 system health reported:
+
+System clock synchronized: no
+
+NTP service remained active.
+
+===== INVESTIGATION =====
+
+Evidence collected:
+
+- timedatectl status
+- chronyc tracking
+- chronyc sources -v
+- chronyc activity
+- chronyc sourcestats -v
+- systemctl status chrony
+- chrony journal evidence
+
+Current NTP source state before remediation:
+
+- 5 sources online
+- 0 sources offline
+- all sources reachable
+- selected NTP source available
+- source measurements within millisecond range
+
+===== ROOT CAUSE =====
+
+Chrony journal evidence showed an earlier period of unreliable
+NTP source selection, including:
+
+- no majority among available sources
+- detected falsetickers
+- excessive source jitter
+- excessive root distance
+- journal reported system clock approximately 12,548 seconds wrong at 00:20:54 UTC
+
+The NTP source environment subsequently recovered, but the
+large accumulated system-clock offset remained.
+
+===== DECISION =====
+
+Decision:
+A controlled clock correction was appropriate because reliable
+NTP sources were available and the remaining system-clock offset
+was several hours.
+
+===== AUTHORIZATION =====
+
+Execution occurred within the controlled Server B infrastructure
+context.
+
+A separate human/policy approval workflow was not independently
+demonstrated for this command.
+
+===== EXECUTION =====
+
+Command:
+
+sudo chronyc makestep
+
+Result:
+
+200 OK
+
+Execution status:
+
+SUCCESS
+
+===== VERIFICATION =====
+
+Post-remediation verification confirmed:
+
+- System clock synchronized: yes
+- NTP service: active
+- System time: approximately 0.000000001 seconds fast of NTP
+- Last offset: approximately -0.003153404 seconds
+- Leap status: Normal
+- 5 NTP sources online
+- 0 NTP sources offline
+- source reachability: 377
+- selected source: ntp-nts-2.ps5.canonical.com
+
+===== FINAL RESULT =====
+
+PASS
+
+The Server B system clock was successfully corrected after
+reliable NTP source selection recovered.
+
+Independent verification confirmed synchronized system time,
+healthy NTP source reachability, active Chrony service, and
+normal leap status.
+
+No further remediation was performed during verification.
