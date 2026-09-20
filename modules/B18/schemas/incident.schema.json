@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tawanitech.local/schemas/b18/incident.schema.json",
+  "title": "B18 Incident",
+  "description": "Structured incident contract for Server B TAP incident investigation.",
+  "type": "object",
+  "required": [
+    "incident_id",
+    "title",
+    "severity",
+    "status",
+    "detected_at",
+    "source",
+    "affected_resources",
+    "symptoms",
+    "evidence",
+    "timeline",
+    "impact",
+    "hypotheses",
+    "root_cause",
+    "recommendations",
+    "confidence",
+    "metadata"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "detected",
+        "triaged",
+        "investigating",
+        "root_cause_identified",
+        "recommendation_ready",
+        "resolved",
+        "closed"
+      ]
+    },
+    "detected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "affected_resources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "symptoms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidenceReference"
+      }
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "impact": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "root_cause": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "evidenceReference": {
+      "type": "object",
+      "required": [
+        "evidence_id",
+        "source",
+        "description"
+      ],
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "collected_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
