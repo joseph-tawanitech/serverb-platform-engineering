@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tawanitech.local/schemas/b18/evidence.schema.json",
+  "title": "B18 Evidence",
+  "description": "Structured evidence collected for B18 incident investigation and root cause analysis.",
+  "type": "object",
+  "required": [
+    "evidence_id",
+    "source",
+    "evidence_type",
+    "collected_at",
+    "observation_time",
+    "resource",
+    "content",
+    "location",
+    "reliability",
+    "status",
+    "metadata"
+  ],
+  "properties": {
+    "evidence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_type": {
+      "type": "string",
+      "enum": [
+        "metric",
+        "log",
+        "trace",
+        "event",
+        "kubernetes_state",
+        "command_output",
+        "configuration",
+        "alert",
+        "other"
+      ]
+    },
+    "collected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "observation_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "resource": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "content": {},
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reliability": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "collected",
+        "partial",
+        "failed"
+      ]
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}
