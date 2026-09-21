@@ -22,6 +22,7 @@ class EvidenceIndexEntry:
     knowledge_type: str
     source_type: str
     resource: str | None
+    incident_id: str | None
     tags: tuple[str, ...]
     source: str
     provenance_reference: str | None
@@ -72,6 +73,7 @@ class EvidenceIndex:
             knowledge_type=document.knowledge_type.value,
             source_type=document.source_type.value,
             resource=document.resource,
+            incident_id=document.incident_id,
             tags=tuple(document.tags),
             source=provenance.source,
             provenance_reference=provenance.reference,

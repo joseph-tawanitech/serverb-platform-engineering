@@ -162,3 +162,15 @@ def test_index_preserves_complete_provenance() -> None:
         result.provenance_collector
         == knowledge.provenance.collector
     )
+
+
+def test_index_preserves_incident_id() -> None:
+    knowledge = make_knowledge()
+
+    knowledge.document.incident_id = "INC-B19-001"
+
+    index = EvidenceIndex()
+
+    result = index.index(knowledge)
+
+    assert result.incident_id == "INC-B19-001"
