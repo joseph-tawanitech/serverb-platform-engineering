@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 
 from ..ingestion.knowledge_ingestor import IngestedKnowledge
 
@@ -10,7 +11,9 @@ class EvidenceIndexEntry:
     """
     Deterministic index entry for B19 evidence.
 
-    The index stores searchable metadata and traceability references.
+    The index stores searchable metadata and complete document
+    provenance required for traceability.
+
     It does not store embeddings or perform semantic retrieval.
     """
 
@@ -22,14 +25,18 @@ class EvidenceIndexEntry:
     tags: tuple[str, ...]
     source: str
     provenance_reference: str | None
+    provenance_version: str | None
+    provenance_checksum: str | None
+    provenance_collected_at: datetime
+    provenance_collector: str
 
 
 class EvidenceIndex:
     """
-    B19.4 deterministic evidence index.
+    B19.4/B19.7 deterministic evidence index.
 
     Provides metadata-based indexing of successfully ingested
-    knowledge.
+    knowledge while preserving source provenance.
 
     This module does not perform:
     - embeddings
@@ -68,6 +75,10 @@ class EvidenceIndex:
             tags=tuple(document.tags),
             source=provenance.source,
             provenance_reference=provenance.reference,
+            provenance_version=provenance.version,
+            provenance_checksum=provenance.checksum,
+            provenance_collected_at=provenance.collected_at,
+            provenance_collector=provenance.collector,
         )
 
         self._entries[entry.document_id] = entry

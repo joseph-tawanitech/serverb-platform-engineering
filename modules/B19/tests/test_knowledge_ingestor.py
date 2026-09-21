@@ -11,6 +11,7 @@ from modules.B19.engine.knowledge_model import (
 )
 from modules.B19.engine.knowledge_provenance import (
     KnowledgeProvenance,
+    calculate_content_checksum,
 )
 from modules.B19.ingestion.knowledge_ingestor import (
     IngestedKnowledge,
@@ -112,3 +113,91 @@ def test_invalid_provenance_type_is_rejected() -> None:
             make_document(),
             "invalid-provenance",
         )
+
+
+def test_integrity_verification_accepts_valid_checksum() -> None:
+    ingestor = KnowledgeIngestor()
+    document = make_document()
+
+    provenance = KnowledgeProvenance(
+        source="docs/runbooks/example-service.md",
+        source_type="file",
+        collected_at=datetime.now(timezone.utc),
+        collector="server-b-tap-b19",
+        version="1.0",
+        checksum=calculate_content_checksum(document.content),
+        reference="DOC-B19-001",
+    )
+
+    result = ingestor.ingest(
+        document,
+        provenance,
+        verify_integrity=True,
+    )
+
+    assert isinstance(result, IngestedKnowledge)
+    assert result.provenance.checksum == provenance.checksum
+
+
+def test_integrity_verification_rejects_checksum_mismatch() -> None:
+    ingestor = KnowledgeIngestor()
+    document = make_document()
+
+    provenance = KnowledgeProvenance(
+        source="docs/runbooks/example-service.md",
+        source_type="file",
+        collected_at=datetime.now(timezone.utc),
+        collector="server-b-tap-b19",
+        version="1.0",
+        checksum=calculate_content_checksum(
+            "tampered content"
+        ),
+        reference="DOC-B19-001",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="content checksum verification failed",
+    ):
+        ingestor.ingest(
+            document,
+            provenance,
+            verify_integrity=True,
+        )
+
+
+def test_integrity_verification_requires_checksum() -> None:
+    ingestor = KnowledgeIngestor()
+    document = make_document()
+
+    provenance = KnowledgeProvenance(
+        source="docs/runbooks/example-service.md",
+        source_type="file",
+        collected_at=datetime.now(timezone.utc),
+        collector="server-b-tap-b19",
+        version="1.0",
+        checksum=None,
+        reference="DOC-B19-001",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="checksum is required when integrity verification is enabled",
+    ):
+        ingestor.ingest(
+            document,
+            provenance,
+            verify_integrity=True,
+        )
+
+
+def test_integrity_verification_is_opt_in() -> None:
+    ingestor = KnowledgeIngestor()
+
+    result = ingestor.ingest(
+        make_document(),
+        make_provenance(),
+    )
+
+    assert isinstance(result, IngestedKnowledge)
+    assert result.provenance.checksum == "sha256:example"

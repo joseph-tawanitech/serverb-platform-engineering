@@ -3,7 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from ..engine.knowledge_model import KnowledgeDocument
-from ..engine.knowledge_provenance import KnowledgeProvenance
+from ..engine.knowledge_provenance import (
+    KnowledgeProvenance,
+    verify_content_checksum,
+)
 
 
 @dataclass(frozen=True)
@@ -38,6 +41,8 @@ class KnowledgeIngestor:
         self,
         document: KnowledgeDocument,
         provenance: KnowledgeProvenance,
+        *,
+        verify_integrity: bool = False,
     ) -> IngestedKnowledge:
         """
         Validate and ingest a knowledge document with provenance.
@@ -55,6 +60,20 @@ class KnowledgeIngestor:
 
         document.validate()
         provenance.validate()
+
+        if verify_integrity:
+            if provenance.checksum is None:
+                raise ValueError(
+                    "checksum is required when integrity verification is enabled"
+                )
+
+            if not verify_content_checksum(
+                document.content,
+                provenance.checksum,
+            ):
+                raise ValueError(
+                    "content checksum verification failed"
+                )
 
         return IngestedKnowledge(
             document=document,

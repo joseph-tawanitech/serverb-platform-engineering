@@ -132,3 +132,33 @@ def test_clear_index() -> None:
     index.clear()
 
     assert index.count() == 0
+
+
+def test_index_preserves_complete_provenance() -> None:
+    knowledge = make_knowledge()
+    index = EvidenceIndex()
+
+    result = index.index(knowledge)
+
+    assert result.document_id == knowledge.document.document_id
+    assert result.source == knowledge.provenance.source
+    assert (
+        result.provenance_reference
+        == knowledge.provenance.reference
+    )
+    assert (
+        result.provenance_version
+        == knowledge.provenance.version
+    )
+    assert (
+        result.provenance_checksum
+        == knowledge.provenance.checksum
+    )
+    assert (
+        result.provenance_collected_at
+        == knowledge.provenance.collected_at
+    )
+    assert (
+        result.provenance_collector
+        == knowledge.provenance.collector
+    )
