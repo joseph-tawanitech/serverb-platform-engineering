@@ -39,7 +39,7 @@ class ChatMessage(BaseModel):
     """A single message in a controlled AI conversation."""
 
     role: Literal["system", "user", "assistant"]
-    content: str = Field(min_length=1, max_length=12000)
+    content: str = Field(min_length=1, max_length=32000)
 
 
 ResponseProfile = Literal["default", "investigation_json"]

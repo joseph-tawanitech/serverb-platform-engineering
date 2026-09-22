@@ -7,6 +7,7 @@ name = "tap-b20"
 version = "0.1.0"
 description = "TAP B20 AI Security Operations"
 requires-python = ">=3.14"
+dependencies = ["jsonschema>=4.0"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
