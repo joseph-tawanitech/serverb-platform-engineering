@@ -8,6 +8,8 @@ from tap_b20.investigation import (
     SecurityInvestigationBuilder,
 )
 from tap_b20.models import SecuritySeverity
+from B19.ai.ai_context_contract import AIContextContract
+from B19.context.context_assembler import RAGContext
 
 
 def make_evidence(
@@ -131,3 +133,56 @@ def test_investigation_validates_required_fields():
             asset="server-01",
             question="Investigate.",
         ).validate()
+
+
+def make_ai_context(investigation_id: str):
+    context = RAGContext(
+        context_id="CTX-001",
+        query_id="QUERY-001",
+        query_text="investigate security condition",
+        items=(),
+        created_at=datetime(2026, 9, 22, 12, 0, tzinfo=timezone.utc),
+        max_items=5,
+    )
+
+    return AIContextContract().create_request(
+        request_id="AICTX-001",
+        investigation_id=investigation_id,
+        purpose="AI security investigation",
+        context=context,
+        created_at=datetime(2026, 9, 22, 12, 1, tzinfo=timezone.utc),
+    )
+
+
+def test_investigation_accepts_b19_ai_context():
+    ai_context = make_ai_context("INV-005")
+
+    result = SecurityInvestigationBuilder().build(
+        investigation_id="INV-005",
+        environment="test",
+        asset="server-01",
+        question="Investigate security condition.",
+        evidence=[],
+        ai_context=ai_context,
+    )
+
+    assert result.ai_context is ai_context
+    assert result.ai_context.investigation_id == "INV-005"
+    assert result.ai_context.context.context_id == "CTX-001"
+
+
+def test_investigation_rejects_mismatched_b19_ai_context():
+    ai_context = make_ai_context("INV-OTHER")
+
+    with pytest.raises(
+        ValueError,
+        match="ai_context investigation_id",
+    ):
+        SecurityInvestigationBuilder().build(
+            investigation_id="INV-006",
+            environment="test",
+            asset="server-01",
+            question="Investigate security condition.",
+            evidence=[],
+            ai_context=ai_context,
+        )

@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .evidence import SecurityEvidence
+from B19.ai.ai_context_contract import AIContextRequest
 
 
 @dataclass(frozen=True)
@@ -17,6 +18,7 @@ class SecurityInvestigation:
     question: str
     evidence: tuple[SecurityEvidence, ...] = ()
     knowledge_context: dict[str, Any] = field(default_factory=dict)
+    ai_context: AIContextRequest | None = None
     missing_evidence: tuple[str, ...] = ()
     metadata: dict[str, Any] = field(default_factory=dict)
     created_at: datetime = field(
@@ -51,6 +53,19 @@ class SecurityInvestigation:
             raise TypeError(
                 "knowledge_context must be a dictionary"
             )
+
+        if self.ai_context is not None:
+            if not isinstance(self.ai_context, AIContextRequest):
+                raise TypeError(
+                    "ai_context must be an AIContextRequest"
+                )
+
+            self.ai_context.validate()
+
+            if self.ai_context.investigation_id != self.investigation_id:
+                raise ValueError(
+                    "ai_context investigation_id must match investigation_id"
+                )
 
         if not isinstance(self.metadata, dict):
             raise TypeError(
@@ -113,6 +128,7 @@ class SecurityInvestigationBuilder:
         question: str,
         evidence: list[SecurityEvidence],
         knowledge_context: dict[str, Any] | None = None,
+        ai_context: AIContextRequest | None = None,
         missing_evidence: tuple[str, ...] = (),
         metadata: dict[str, Any] | None = None,
         created_at: datetime | None = None,
@@ -138,6 +154,7 @@ class SecurityInvestigationBuilder:
             question=question,
             evidence=tuple(evidence),
             knowledge_context=knowledge_context,
+            ai_context=ai_context,
             missing_evidence=missing_evidence,
             metadata=metadata,
             created_at=created_at,
