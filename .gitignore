@@ -1,60 +1,88 @@
+
+# ==========================================
+# Server B / TAP - Git Ignore
+# ==========================================
+
 # Secrets and credentials
 .env
 .env.*
+!.env.example
 *.key
 *.pem
 *.p12
 *.pfx
+*.secret
+secrets/
+secrets.*
+credentials/
+credentials.*
 
 # SSH private keys
 id_ed25519
 id_ed25519.pub
 id_rsa
 id_rsa.pub
+*.ppk
 
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
+.pytest_cache/
 .venv/
 venv/
 env/
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
 
-# Terraform
+# Terraform / OpenTofu
 .terraform/
 *.tfstate
 *.tfstate.*
+*.tfplan
 crash.log
 crash.*.log
 .terraform.tfstate.lock.info
 
 # Ansible
 *.retry
+vault-password-file
+
+# Kubernetes
+*.kubeconfig
+kubeconfig
+kubeconfig.*
 
 # Logs
 *.log
+logs/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # Temporary files
 *.tmp
-*.temp
-*.swp
 *.bak
-*.backup
-*~
+*.old
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# Local inspection / temporary work
-/tmp/
+# Generated reports and test artifacts
+coverage/
+htmlcov/
+.tox/
+.nox/
 
 # Ansible Runner generated artifacts
 ansible/runner-test/artifacts/
-
-# B14 Python environment and cache
-modules/B14/.venv/
-modules/B14/src/__pycache__/
-*.pyc
-
-# Pytest cache
-.pytest_cache/
+ansible/runner-test/env/
+ansible/runner-test/inventory/
