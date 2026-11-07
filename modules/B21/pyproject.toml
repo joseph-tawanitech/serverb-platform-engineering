@@ -9,7 +9,7 @@ description = "TAP B21 Agentic DevOps Orchestration"
 requires-python = ">=3.14"
 dependencies = [
     "cryptography>=44.0",
-    "tap-b20 @ file:../B20",
+    "tap-b20>=0.1.0",
 ]
 
 [tool.setuptools.packages.find]

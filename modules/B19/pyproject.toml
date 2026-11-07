@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tap-b19"
+version = "0.1.0"
+description = "TAP B19 Retrieval-Augmented Generation and Knowledge Platform"
+requires-python = ">=3.14"
+
+[tool.setuptools]
+packages = [
+    "B19",
+    "B19.ai",
+    "B19.architecture",
+    "B19.context",
+    "B19.engine",
+    "B19.indexing",
+    "B19.ingestion",
+    "B19.retrieval",
+    "B19.validation",
+]
+package-dir = { "B19" = "." }
