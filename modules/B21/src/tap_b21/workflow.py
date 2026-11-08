@@ -48,7 +48,6 @@ ALLOWED_TRANSITIONS = {
         WorkflowState.CANCELLED,
     },
     WorkflowState.AUTHORIZED: {
-        WorkflowState.EXECUTING,
         WorkflowState.CANCELLED,
         WorkflowState.NEEDS_HUMAN,
     },

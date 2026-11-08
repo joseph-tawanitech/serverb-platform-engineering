@@ -1,3 +1,4 @@
+
 import sys
 import unittest
 from pathlib import Path
@@ -43,6 +44,30 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(
             workflow.state,
             WorkflowState.GOVERNANCE_PENDING,
+        )
+
+    def test_authorized_workflow_cannot_execute_through_ordinary_transition(self):
+        workflow = Workflow("task-1")
+
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+
+        # Simulate the trusted authorization service completing its checks.
+        workflow._authorize_after_trusted_checks("grant-test")
+
+        self.assertEqual(
+            workflow.state,
+            WorkflowState.AUTHORIZED,
+        )
+
+        # Ordinary transitions must not bypass the controlled execution gate.
+        with self.assertRaises(InvalidTransitionError):
+            workflow.transition(WorkflowState.EXECUTING)
+
+        self.assertEqual(
+            workflow.state,
+            WorkflowState.AUTHORIZED,
         )
 
     def test_cannot_skip_directly_to_execution(self):
