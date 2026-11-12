@@ -135,3 +135,32 @@ class Workflow:
         self.authorization_grant_id = grant_id
         self.state = WorkflowState.AUTHORIZED
         return self.state
+
+    def _begin_execution_after_trusted_checks(
+        self,
+        grant_id: str,
+    ) -> WorkflowState:
+        """Begin execution using the grant already accepted by trusted authorization.
+
+        This checks the workflow state and exact grant ID match.
+        It does not independently verify the grant signature or consume it.
+
+        This is an application-level guard, not a security boundary against
+        arbitrary code running inside this Python process.
+        """
+
+        if not isinstance(grant_id, str) or not grant_id.strip():
+            raise ValueError("grant_id must be a non-empty string")
+
+        if self.state is not WorkflowState.AUTHORIZED:
+            raise ValueError(
+                "workflow must be AUTHORIZED before execution"
+            )
+
+        if self.authorization_grant_id != grant_id:
+            raise ValueError(
+                "grant_id does not match the workflow authorization grant"
+            )
+
+        self.state = WorkflowState.EXECUTING
+        return self.state

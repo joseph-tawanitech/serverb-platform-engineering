@@ -53,7 +53,6 @@ class WorkflowTests(unittest.TestCase):
         workflow.transition(WorkflowState.PLAN_PROPOSED)
         workflow.transition(WorkflowState.GOVERNANCE_PENDING)
 
-        # Simulate the trusted authorization service completing its checks.
         workflow._authorize_after_trusted_checks("grant-test")
 
         self.assertEqual(
@@ -61,13 +60,70 @@ class WorkflowTests(unittest.TestCase):
             WorkflowState.AUTHORIZED,
         )
 
-        # Ordinary transitions must not bypass the controlled execution gate.
         with self.assertRaises(InvalidTransitionError):
             workflow.transition(WorkflowState.EXECUTING)
 
         self.assertEqual(
             workflow.state,
             WorkflowState.AUTHORIZED,
+        )
+
+    def test_valid_grant_allows_execution_transition(self):
+        workflow = Workflow("task-1")
+
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+        workflow._authorize_after_trusted_checks("grant-test")
+
+        workflow._begin_execution_after_trusted_checks("grant-test")
+
+        self.assertEqual(
+            workflow.state,
+            WorkflowState.EXECUTING,
+        )
+
+    def test_wrong_grant_rejects_execution_transition(self):
+        workflow = Workflow("task-1")
+
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+        workflow._authorize_after_trusted_checks("grant-test")
+
+        with self.assertRaises(ValueError):
+            workflow._begin_execution_after_trusted_checks("wrong-grant")
+
+        self.assertEqual(
+            workflow.state,
+            WorkflowState.AUTHORIZED,
+        )
+
+    def test_empty_grant_rejects_execution_transition(self):
+        workflow = Workflow("task-1")
+
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+        workflow._authorize_after_trusted_checks("grant-test")
+
+        with self.assertRaises(ValueError):
+            workflow._begin_execution_after_trusted_checks("")
+
+        self.assertEqual(
+            workflow.state,
+            WorkflowState.AUTHORIZED,
+        )
+
+    def test_unauthorized_workflow_cannot_begin_execution(self):
+        workflow = Workflow("task-1")
+
+        with self.assertRaises(ValueError):
+            workflow._begin_execution_after_trusted_checks("grant-test")
+
+        self.assertEqual(
+            workflow.state,
+            WorkflowState.ACCEPTED,
         )
 
     def test_cannot_skip_directly_to_execution(self):
