@@ -1,21 +1,34 @@
 
-"""Dispatcher contracts for TAP B21.
+"""Dispatcher contracts and adapter preparation for TAP B21.
 
-These contracts describe dispatch attempts and their outcomes.
-They do not perform adapter selection, authorization or execution.
+D1 defines immutable dispatch and action execution records.
+
+D2 prepares an action by validating its execution request and
+resolving the adapter selected by the plan router.
+
+Preparation does not authorize or execute infrastructure changes.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 from .adapter_contracts import (
+    AdapterExecutionRequest,
     AdapterExecutionResult,
     ExecutionStatus,
 )
-from .contracts import SUPPORTED_CHANNELS
+from .adapter_registry import AdapterRegistry
+from .authorization import AuthorizationGrant
+from .contracts import (
+    SUPPORTED_CHANNELS,
+    RemediationAction,
+    RemediationPlan,
+    TaskRequest,
+)
+from .plan_router import RoutedAction
 
 
 class ActionExecutionStatus(str, Enum):
@@ -303,3 +316,106 @@ class DispatchResult:
                 )
 
             action_attempts.add(action_attempt)
+
+
+@dataclass(frozen=True)
+class PreparedAction:
+    """Validated action request paired with its resolved adapter.
+
+    This is a temporary in-memory preparation object.
+    It does not authorize or execute infrastructure changes.
+    """
+
+    adapter: object
+    adapter_id: str
+    request: AdapterExecutionRequest
+    prepared_at: datetime
+
+    def validate(self) -> None:
+        _require_text(self.adapter_id, "adapter_id")
+
+        if self.adapter is None:
+            raise ValueError("adapter is required")
+
+        if not isinstance(self.request, AdapterExecutionRequest):
+            raise ValueError(
+                "request must be an AdapterExecutionRequest"
+            )
+
+        if self.prepared_at is None:
+            raise ValueError("prepared_at is required")
+
+        _require_aware_datetime(
+            self.prepared_at,
+            "prepared_at",
+        )
+
+        self.request.validate()
+
+        actual_adapter_id = getattr(
+            self.adapter,
+            "adapter_id",
+            None,
+        )
+        _require_text(actual_adapter_id, "adapter.adapter_id")
+
+        if actual_adapter_id != self.adapter_id:
+            raise ValueError("prepared adapter ID mismatch")
+
+
+def prepare_action(
+    *,
+    registry: AdapterRegistry,
+    task: TaskRequest,
+    plan: RemediationPlan,
+    action: RemediationAction,
+    routed_action: RoutedAction,
+    routed_actions: tuple[RoutedAction, ...],
+    authorization_grant: AuthorizationGrant,
+    prepared_at: datetime | None = None,
+) -> PreparedAction:
+    """Validate and prepare one action for a future dispatch stage.
+
+    This function does not authorize, validate through the adapter,
+    consume an authorization grant, or execute infrastructure changes.
+    """
+
+    if not isinstance(registry, AdapterRegistry):
+        raise ValueError("registry must be an AdapterRegistry")
+
+    request = AdapterExecutionRequest(
+        task=task,
+        plan=plan,
+        action=action,
+        routed_action=routed_action,
+        routed_actions=routed_actions,
+        authorization_grant=authorization_grant,
+    )
+
+    # Validate the request before resolving an adapter.
+    request.validate()
+
+    if prepared_at is None:
+        prepared_at = datetime.now(timezone.utc)
+
+    _require_aware_datetime(prepared_at, "prepared_at")
+
+    # Resolve using the router-selected channel, not the proposed channel.
+    adapter = registry.resolve(
+        routed_action.selected_channel,
+        routed_action.operation,
+    )
+
+    adapter_id = getattr(adapter, "adapter_id", None)
+    _require_text(adapter_id, "adapter.adapter_id")
+
+    prepared = PreparedAction(
+        adapter=adapter,
+        adapter_id=adapter_id,
+        request=request,
+        prepared_at=prepared_at,
+    )
+
+    prepared.validate()
+
+    return prepared
