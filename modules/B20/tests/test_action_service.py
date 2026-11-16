@@ -88,3 +88,47 @@ def test_unauthorized_asset_is_blocked():
     assert result.decision == SecurityDecision.BLOCK
     assert result.risk == SecurityRisk.HIGH
     assert result.authorization_required is False
+
+
+def test_action_risk_above_policy_maximum_is_blocked():
+    result = evaluate_security_action(
+        make_action(risk=SecurityRisk.HIGH),
+        make_policy(max_risk=SecurityRisk.MEDIUM),
+    )
+
+    assert result.decision == SecurityDecision.BLOCK
+    assert result.risk == SecurityRisk.HIGH
+    assert result.authorization_required is False
+    assert "exceeds" in result.message
+
+
+def test_action_risk_equal_to_policy_maximum_can_be_allowed():
+    result = evaluate_security_action(
+        make_action(risk=SecurityRisk.MEDIUM),
+        make_policy(max_risk=SecurityRisk.MEDIUM),
+    )
+
+    assert result.decision == SecurityDecision.ALLOW
+    assert result.risk == SecurityRisk.MEDIUM
+    assert result.authorization_required is True
+
+
+def test_action_risk_below_policy_maximum_is_preserved():
+    result = evaluate_security_action(
+        make_action(risk=SecurityRisk.LOW),
+        make_policy(max_risk=SecurityRisk.HIGH),
+    )
+
+    assert result.decision == SecurityDecision.ALLOW
+    assert result.risk == SecurityRisk.LOW
+
+
+def test_critical_action_risk_exceeds_high_policy_ceiling():
+    result = evaluate_security_action(
+        make_action(risk=SecurityRisk.CRITICAL),
+        make_policy(max_risk=SecurityRisk.HIGH),
+    )
+
+    assert result.decision == SecurityDecision.BLOCK
+    assert result.risk == SecurityRisk.CRITICAL
+    assert result.authorization_required is False

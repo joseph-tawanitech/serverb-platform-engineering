@@ -1,4 +1,3 @@
-
 """Governed workflow state machine for TAP B21.
 
 State transitions organize the workflow; they do not independently
@@ -19,6 +18,7 @@ class WorkflowState(str, Enum):
     COMPLETED = "COMPLETED"
     REJECTED = "REJECTED"
     FAILED = "FAILED"
+    BLOCKED = "BLOCKED"
     CANCELLED = "CANCELLED"
     NEEDS_HUMAN = "NEEDS_HUMAN"
     UNVERIFIED = "UNVERIFIED"
@@ -50,18 +50,21 @@ ALLOWED_TRANSITIONS = {
     WorkflowState.AUTHORIZED: {
         WorkflowState.CANCELLED,
         WorkflowState.NEEDS_HUMAN,
+        WorkflowState.BLOCKED,
     },
     WorkflowState.EXECUTING: {
         WorkflowState.VERIFYING,
         WorkflowState.FAILED,
         WorkflowState.NEEDS_HUMAN,
         WorkflowState.UNVERIFIED,
+        WorkflowState.BLOCKED,
     },
     WorkflowState.VERIFYING: {
         WorkflowState.COMPLETED,
         WorkflowState.FAILED,
         WorkflowState.UNVERIFIED,
         WorkflowState.NEEDS_HUMAN,
+        WorkflowState.BLOCKED,
     },
     WorkflowState.UNVERIFIED: {
         WorkflowState.VERIFYING,
@@ -75,6 +78,7 @@ ALLOWED_TRANSITIONS = {
     },
     WorkflowState.REJECTED: set(),
     WorkflowState.FAILED: set(),
+    WorkflowState.BLOCKED: set(),
     WorkflowState.CANCELLED: set(),
     WorkflowState.COMPLETED: set(),
 }

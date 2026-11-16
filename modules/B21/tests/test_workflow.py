@@ -151,5 +151,61 @@ class WorkflowTests(unittest.TestCase):
             Workflow(" ")
 
 
+    def test_authorized_workflow_can_be_blocked(self):
+        workflow = Workflow("task-1")
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+        workflow._authorize_after_trusted_checks("grant-test")
+
+        workflow.transition(WorkflowState.BLOCKED)
+
+        self.assertEqual(workflow.state, WorkflowState.BLOCKED)
+
+    def test_executing_workflow_can_be_blocked(self):
+        workflow = Workflow("task-1")
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+        workflow._authorize_after_trusted_checks("grant-test")
+        workflow._begin_execution_after_trusted_checks("grant-test")
+
+        workflow.transition(WorkflowState.BLOCKED)
+
+        self.assertEqual(workflow.state, WorkflowState.BLOCKED)
+
+    def test_verifying_workflow_can_be_blocked(self):
+        workflow = Workflow("task-1")
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+        workflow._authorize_after_trusted_checks("grant-test")
+        workflow._begin_execution_after_trusted_checks("grant-test")
+        workflow.transition(WorkflowState.VERIFYING)
+
+        workflow.transition(WorkflowState.BLOCKED)
+
+        self.assertEqual(workflow.state, WorkflowState.BLOCKED)
+
+    def test_blocked_workflow_is_terminal(self):
+        workflow = Workflow("task-1")
+        workflow.transition(WorkflowState.INVESTIGATING)
+        workflow.transition(WorkflowState.PLAN_PROPOSED)
+        workflow.transition(WorkflowState.GOVERNANCE_PENDING)
+        workflow._authorize_after_trusted_checks("grant-test")
+        workflow.transition(WorkflowState.BLOCKED)
+
+        with self.assertRaises(InvalidTransitionError):
+            workflow.transition(WorkflowState.INVESTIGATING)
+
+        self.assertEqual(workflow.state, WorkflowState.BLOCKED)
+
+    def test_blocked_is_distinct_from_needs_human(self):
+        self.assertNotEqual(
+            WorkflowState.BLOCKED,
+            WorkflowState.NEEDS_HUMAN,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

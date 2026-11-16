@@ -4,11 +4,56 @@ from .models import SecurityDecision, SecurityRequest
 from .policy import PolicyDecision, SecurityPolicy, SecurityRisk
 
 
+_RISK_ORDER = {
+    SecurityRisk.LOW: 1,
+    SecurityRisk.MEDIUM: 2,
+    SecurityRisk.HIGH: 3,
+    SecurityRisk.CRITICAL: 4,
+}
+
+
 def evaluate_policy(
     request: SecurityRequest,
     policy: SecurityPolicy,
 ) -> PolicyDecision:
-    """Evaluate a security request against an operational security policy."""
+    """Evaluate a security request against an operational security policy.
+
+    When requested_risk is present, it represents the action's assessed risk
+    and must not exceed the policy's maximum permitted risk.
+
+    Legacy requests without requested_risk retain the policy max_risk as
+    their effective risk classification.
+    """
+
+    raw_requested_risk = request.metadata.get("requested_risk")
+
+    if raw_requested_risk is None:
+        requested_risk = policy.max_risk
+    else:
+        try:
+            requested_risk = SecurityRisk(raw_requested_risk)
+        except (TypeError, ValueError):
+            return PolicyDecision(
+                policy_id=policy.policy_id,
+                policy_version=policy.version,
+                request_id=request.request_id,
+                decision=SecurityDecision.BLOCK,
+                risk=SecurityRisk.CRITICAL,
+                message="Requested risk is missing a valid classification.",
+            )
+
+    if _RISK_ORDER[requested_risk] > _RISK_ORDER[policy.max_risk]:
+        return PolicyDecision(
+            policy_id=policy.policy_id,
+            policy_version=policy.version,
+            request_id=request.request_id,
+            decision=SecurityDecision.BLOCK,
+            risk=requested_risk,
+            message=(
+                f"Requested risk {requested_risk.value} exceeds "
+                f"the policy maximum {policy.max_risk.value}."
+            ),
+        )
 
     if not policy.enabled:
         return PolicyDecision(
@@ -16,7 +61,7 @@ def evaluate_policy(
             policy_version=policy.version,
             request_id=request.request_id,
             decision=SecurityDecision.REVIEW,
-            risk=policy.max_risk,
+            risk=requested_risk,
             message="Security policy is disabled and requires review.",
         )
 
@@ -46,7 +91,7 @@ def evaluate_policy(
             policy_version=policy.version,
             request_id=request.request_id,
             decision=SecurityDecision.BLOCK,
-            risk=policy.max_risk,
+            risk=requested_risk,
             message="Requested operation is explicitly blocked by policy.",
         )
 
@@ -56,7 +101,7 @@ def evaluate_policy(
             policy_version=policy.version,
             request_id=request.request_id,
             decision=SecurityDecision.REVIEW,
-            risk=policy.max_risk,
+            risk=requested_risk,
             message="Requested operation requires policy review.",
         )
 
@@ -66,7 +111,7 @@ def evaluate_policy(
             policy_version=policy.version,
             request_id=request.request_id,
             decision=SecurityDecision.ALLOW,
-            risk=policy.max_risk,
+            risk=requested_risk,
             message="Requested operation is allowed by policy.",
         )
 
@@ -75,6 +120,6 @@ def evaluate_policy(
         policy_version=policy.version,
         request_id=request.request_id,
         decision=SecurityDecision.REVIEW,
-        risk=policy.max_risk,
+        risk=requested_risk,
         message="Requested operation is not explicitly classified by policy.",
     )
