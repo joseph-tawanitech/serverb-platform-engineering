@@ -1,10 +1,10 @@
 # Server B / TAP — B20–B23 Remediation Engine Architecture and Engineering Audit
 
-**Project:** Tawanitech Automation Platform (TAP)  
-**Repository:** `joseph-tawanitech/serverb-platform-engineering`  
-**Engineering scope:** B20–B23  
-**Project area:** Cloud SRE, Platform Engineering and Governed Agentic DevOps  
-**Audit type:** Architecture and implementation review  
+**Project:** Tawanitech Automation Platform (TAP)
+**Repository:** `joseph-tawanitech/serverb-platform-engineering`
+**Engineering scope:** B20–B23
+**Project area:** Cloud SRE, Platform Engineering and Governed Agentic DevOps
+**Audit type:** Architecture and implementation review
 **Status:** Implemented software foundation with tested components and documented limitations
 
 ---
