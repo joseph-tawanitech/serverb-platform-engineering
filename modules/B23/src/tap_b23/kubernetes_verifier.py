@@ -150,6 +150,8 @@ class KubernetesDeploymentVerifier:
                 desired = 1 if desired is None else desired
 
                 updated = getattr(status, "updated_replicas", None) or 0
+                ready = getattr(status, "ready_replicas", None)
+                ready = 0 if ready is None else ready
                 available = getattr(status, "available_replicas", None) or 0
                 unavailable = getattr(status, "unavailable_replicas", None) or 0
 
@@ -163,6 +165,7 @@ class KubernetesDeploymentVerifier:
                 rollout_complete = (
                     observed_generation >= generation
                     and updated == desired
+                    and ready == desired
                     and available == desired
                     and unavailable == 0
                 )
@@ -175,6 +178,7 @@ class KubernetesDeploymentVerifier:
                     f"Observed generation: {observed_generation}",
                     f"Desired replicas: {desired}",
                     f"Updated replicas: {updated}",
+                    f"Ready replicas: {ready}",
                     f"Available replicas: {available}",
                     f"Unavailable replicas: {unavailable}",
                     f"Restart annotation observed: {restart_observed}",

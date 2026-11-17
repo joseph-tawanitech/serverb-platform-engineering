@@ -91,6 +91,7 @@ def make_deployment(record, *, complete=True):
         status=SimpleNamespace(
             observed_generation=5,
             updated_replicas=2 if complete else 1,
+            ready_replicas=2 if complete else 1,
             available_replicas=2 if complete else 1,
             unavailable_replicas=0 if complete else 1,
         ),
@@ -142,6 +143,37 @@ def test_completed_restart_is_verified():
     assert result.execution_status == ActionExecutionStatus.SUCCEEDED
     assert any("Rollout complete: True" in item for item in result.evidence)
     assert len(api.calls) == 1
+
+
+def test_missing_ready_replica_data_is_not_verified():
+    record = make_record()
+    deployment = make_deployment(record)
+    del deployment.status.ready_replicas
+
+    api = FakeAppsAPI(deployment)
+    verifier = make_verifier(api, timeout=0.003)
+
+    result = verifier.verify(record)
+
+    assert result.status == VerificationStatus.UNVERIFIED
+    assert result.status != VerificationStatus.VERIFIED
+    assert any("Ready replicas: 0" in item for item in result.evidence)
+
+
+def test_stale_observed_generation_is_not_verified():
+    record = make_record()
+    deployment = make_deployment(record)
+    deployment.status.observed_generation = 4
+
+    api = FakeAppsAPI(deployment)
+    verifier = make_verifier(api, timeout=0.003)
+
+    result = verifier.verify(record)
+
+    assert result.status == VerificationStatus.UNVERIFIED
+    assert result.status != VerificationStatus.VERIFIED
+    assert any("Observed generation: 4" in item for item in result.evidence)
+    assert any("Generation: 5" in item for item in result.evidence)
 
 
 def test_incomplete_rollout_is_not_verified():
