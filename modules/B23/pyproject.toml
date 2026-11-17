@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tap-b23"
+version = "0.1.0"
+description = "TAP B23 independent verification and audit recording"
+requires-python = ">=3.14"
+dependencies = [
+    "tap-b22>=0.1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

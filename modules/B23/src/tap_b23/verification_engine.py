@@ -81,6 +81,20 @@ class VerificationEngine:
                 if result.attempt_id != record.attempt_id:
                     raise ValueError("verifier returned a different attempt ID")
 
+                expected_identity = (
+                    ("task_id", record.task_id),
+                    ("plan_id", record.plan_id),
+                    ("action_id", record.action_id),
+                    ("selected_channel", record.selected_channel),
+                    ("execution_status", record.status),
+                )
+
+                for field, expected in expected_identity:
+                    if getattr(result, field) != expected:
+                        raise ValueError(
+                            f"verifier returned a different {field}"
+                        )
+
             results.append(result)
 
         statuses = [result.status for result in results]
