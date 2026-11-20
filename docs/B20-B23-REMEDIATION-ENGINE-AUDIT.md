@@ -491,3 +491,40 @@ The project is not presented as a finished enterprise production platform. It is
 The central objective is to make infrastructure automation more controlled, traceable and reliable while retaining the ability to introduce AI assistance without giving AI unrestricted execution authority.
 
 **AI Everywhere. Authority Controlled. Execution Governed. Everything Recorded.**
+
+## 14. Regression Validation Update — 20 November 2026
+
+A new combined regression test was executed against the B20, B21, B22 and B23 test suites on 20 November 2026.
+
+**Repository checkpoint:**
+- Branch: `main`
+- Commit: `9e1d801`
+- Remote synchronization: `main` matched `origin/main` before this documentation update.
+
+**Command executed:**
+
+```bash
+.venv-b20/bin/python -m pytest \
+  modules/B20/tests \
+  modules/B21/tests \
+  modules/B22/tests \
+  modules/B23/tests -q
+```
+
+**Actual result:**
+
+```text
+345 passed in 2.78s
+```
+
+**Result: PASS.**
+
+All four module test suites passed together in one regression run. This provides current combined software-level regression evidence for the B20–B23 implementation at the recorded repository checkpoint.
+
+**Reconciliation with earlier test figures:**
+
+Section 8 records earlier module-level results totalling 341 tests (B20: 56, B21: 214, B22: 32 and B23: 39). The new combined run reports 345 passing tests. The four-test difference has not been attributed to a particular module because individual module totals were not captured in this combined run. The earlier figures are retained as historical results; 345 is the latest verified combined regression result.
+
+**Evidence boundary:**
+
+This test result demonstrates passing automated software tests. It does not establish successful live remediation against production Kubernetes clusters, live Ansible-managed hosts, or a fully deployed production TAP environment. Those remain separate validation objectives.
